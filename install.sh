@@ -33,7 +33,7 @@ clear
 
 ############ BREW ############
 echo_title "BEGIN INSTALLING BREW"
-which -s brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+which -s brew || /usr/bin/ruby -e "$(curl -fsSL -k https://raw.githubusercontent.com/Homebrew/install/master/install)"
 # brew update
 echo_title "END INSTALLING BREW"
 ############ BREW ############
