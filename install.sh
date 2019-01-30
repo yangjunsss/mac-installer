@@ -29,26 +29,9 @@ echo_title() {
   echo_color "$message" "$color"
 }
 
-clear
-
-############ BREW ############
-echo_title "BEGIN INSTALLING BREW"
-which -s brew || /usr/bin/ruby -e "$(curl -fsSL -k https://raw.githubusercontent.com/Homebrew/install/master/install)"
-# brew update
-echo_title "END INSTALLING BREW"
-############ BREW ############
-
-
-############ BREW CASK ############
-echo_title "BEGIN INSTALLING BREW CASK"
-brew tap caskroom/cask
-echo_title "END INSTALLING BREW CASK"
-############ BREW CASK ############
-
 choice=(python on
   go on
   java on
-  git on
   google-chrome on
   iTerm2 on
   SublimeText3 on
@@ -60,8 +43,72 @@ choice=(python on
   Wechat off
   )
 
+usage=$"
+Usage: Usage: install [options...]
+Options:
+--proxy-user USER[:PASSWORD] 
+--proxy [PROTOCOL://]HOST[:PORT] 
+--insecure
+"
+
+proxy_user=""
+proxy=""
+insecure=""
+curlrc=~/.curlrc
+curlrc_bak=~/.curlrcbak
+export HOMEBREW_NO_AUTO_UPDATE=1 # ignore update or use `brew update`
+
+while [ $# -gt 0 ]; do
+  case $1 in
+    --proxy-user)
+    proxy_user="proxy-user = $2"
+    shift
+    ;;
+    --proxy)
+    proxy="proxy = $2"
+    shift
+    ;;
+    --insecure)
+    insecure="insecure"
+    shift
+    ;;
+    *)
+    echo_color "Invaid $1 $usage"
+    exit 1;;
+  esac
+  shift || true
+done
+
+
+if [[ ! -z $insecure ]]; then
+  #statements
+  export HOMEBREW_CURLRC=1
+  [ -e $curlrc ] && cp -f $curlrc $curlrc_bak
+  cat <<-EOF > $curlrc
+$proxy_user
+$proxy
+$insecure
+EOF
+fi
+
+############ BREW ############
+echo_title "BEGIN INSTALLING BREW"
+which -s brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+echo_title "END INSTALLING BREW"
+############ BREW ############
+
+
+############ BREW CASK ############
+echo_title "BEGIN INSTALLING BREW CASK"
+brew tap caskroom/cask
+echo_title "END INSTALLING BREW CASK"
+############ BREW CASK ############
+
+
 
 ############ Basic ############
+which -s git || brew install git
+which -s git && git config http.sslVerify false
 which -s tree || brew install tree
 which -s wget || brew install wget
 
@@ -76,9 +123,6 @@ if ([[ ${choice[*]} == *"go on"* ]]); then
 fi
 if ([[ ${choice[*]} == *"java on"* ]]); then
   brew cask install java
-fi
-if ([[ ${choice[*]} == *"git on"* ]]); then
-  which -s git || brew install git
 fi
 if ([[ ${choice[*]} == *"google-chrome on"* ]]); then
   brew cask install google-chrome
@@ -114,12 +158,19 @@ fi
 
 brew cleanup
 
+[ -e $curlrc_bak ] && cp -f $curlrc_bak $curlrc
+
+
 function startDocker {
   return
 }
 
-function startK8sLocal {
-  return
+function startK8SLocal {
+  minikube start
+}
+
+function testK8SLocal {
+  kubectl run hello-minikube --image=k8s.gcr.io/echoserver:1.10 --port=8080
 }
 
 
