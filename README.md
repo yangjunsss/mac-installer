@@ -1,24 +1,12 @@
 # mac-installer
 
-You can install repeated and configurate the $choice variable.
+## How to use
+You can install repeatedly and configurate the $choice variable.
 ```bash
-curl -sSL -k https://raw.githubusercontent.com/yangjunsss/mac-installer/master/install.sh
+curl -sSL -k https://raw.githubusercontent.com/yangjunsss/mac-installer/master/install.sh | bash
 ```
 
-Default configs is:
-
+## How to use with Proxy
 ```bash
-choice=(python on
-  go on
-  java on
-  git on
-  google-chrome on
-  iTerm2 on
-  SublimeText3 on
-  Slack on
-  Aton on
-  Docker on
-  Kubernetes on
-  Shadowsocks off
-  )
+export https_proxy=[protocol://][user:password@]proxyhost[:port]; curl -sSL -k https://raw.githubusercontent.com/yangjunsss/mac-installer/master/install.sh | bash
 ```
