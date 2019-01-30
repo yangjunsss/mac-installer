@@ -41,6 +41,8 @@ choice=(python on
   Kubernetes on
   Shadowsocks off
   Wechat off
+  Office on
+  Intellij on
   )
 
 usage=$"
@@ -113,7 +115,7 @@ which -s tree || brew install tree
 which -s wget || brew install wget
 
 ############ SOFTWARE ############
-echo ${choice[*]}
+echo "App list: ${choice[*]}"
 
 if ([[ ${choice[*]} == *"python on"* ]]); then
   which -s python || brew install python
@@ -154,6 +156,9 @@ if ([[ ${choice[*]} == *"Shadowsocks on"* ]]); then
 fi
 if ([[ ${choice[*]} == *"Wechat on"* ]]); then
   brew cask install wechat
+fi
+if [[ ${choice[*]} == *"Office on"* ]]; then
+  brew cask install microsoft-office
 fi
 
 brew cleanup
