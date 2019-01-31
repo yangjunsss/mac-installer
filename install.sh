@@ -10,19 +10,12 @@ color_magenta="\x1B[35m"
 color_cyan="\x1B[36m"
 color_white="\x1B[37m"
 
-
-# Echo a message in color (default to normal color)
-# usage: echo_color message
-# usage: echo_color message $color_red
 echo_color() {
   message=$1
   color=${2:-$color_normal}
   printf "$color$message $color_normal\n"
 }
 
-# Echo a title in color 
-# usage: echo_title message
-# usage: echo_title message color
 echo_title() {
   message="***** $1 *****\n"
   color=${2:-$color_green}
@@ -48,8 +41,6 @@ choice=(python on
 usage=$"
 Usage: Usage: install [options...]
 Options:
---proxy-user USER[:PASSWORD] 
---proxy [PROTOCOL://]HOST[:PORT] 
 --insecure
 "
 
@@ -62,14 +53,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1 # ignore update or use `brew update`
 
 while [ $# -gt 0 ]; do
   case $1 in
-    --proxy-user)
-    proxy_user="proxy-user = $2"
-    shift
-    ;;
-    --proxy)
-    proxy="proxy = $2"
-    shift
-    ;;
     --insecure)
     insecure="insecure"
     shift
@@ -85,6 +68,7 @@ done
 if [[ ! -z $insecure ]]; then
   #statements
   export HOMEBREW_CURLRC=1
+  git config --global http.sslVerify false
   [ -e $curlrc ] && cp -f $curlrc $curlrc_bak
   cat <<-EOF > $curlrc
 $proxy_user
@@ -99,24 +83,18 @@ which -s brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.co
 echo_title "END INSTALLING BREW"
 ############ BREW ############
 
-
 ############ BREW CASK ############
 echo_title "BEGIN INSTALLING BREW CASK"
 brew tap caskroom/cask
 echo_title "END INSTALLING BREW CASK"
 ############ BREW CASK ############
 
-
-
 ############ Basic ############
-which -s git || brew install git
-which -s git && git config http.sslVerify false
 which -s tree || brew install tree
 which -s wget || brew install wget
 
 ############ SOFTWARE ############
-echo "App list: ${choice[*]}"
-
+echo "Installing list: ${choice[*]}"
 if ([[ ${choice[*]} == *"python on"* ]]); then
   which -s python || brew install python
 fi
