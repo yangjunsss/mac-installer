@@ -22,10 +22,10 @@ echo_title() {
   echo_color "$message" "$color"
 }
 
-choice=(python on
-  go on
-  java on
-  google-chrome on
+choice=(Python on
+  Go on
+  Java on
+  Google-chrome on
   iTerm2 on
   SublimeText3 on
   Slack on
@@ -95,16 +95,16 @@ which -s wget || brew install wget
 
 ############ SOFTWARE ############
 echo "Installing list: ${choice[*]}"
-if ([[ ${choice[*]} == *"python on"* ]]); then
+if ([[ ${choice[*]} == *"Python on"* ]]); then
   which -s python || brew install python
 fi
-if ([[ ${choice[*]} == *"go on"* ]]); then
+if ([[ ${choice[*]} == *"Go on"* ]]); then
   which -s go || brew install golang
 fi
-if ([[ ${choice[*]} == *"java on"* ]]); then
+if ([[ ${choice[*]} == *"Java on"* ]]); then
   brew cask install java
 fi
-if ([[ ${choice[*]} == *"google-chrome on"* ]]); then
+if ([[ ${choice[*]} == *"Google-chrome on"* ]]); then
   brew cask install google-chrome
 fi
 if ([[ ${choice[*]} == *"iTerm2 on"* ]]); then
