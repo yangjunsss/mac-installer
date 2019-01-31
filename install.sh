@@ -44,8 +44,6 @@ Options:
 --insecure
 "
 
-proxy_user=""
-proxy=""
 insecure=""
 curlrc=~/.curlrc
 curlrc_bak=~/.curlrcbak
@@ -71,8 +69,6 @@ if [[ ! -z $insecure ]]; then
   git config --global http.sslVerify false
   [ -e $curlrc ] && cp -f $curlrc $curlrc_bak
   cat <<-EOF > $curlrc
-$proxy_user
-$proxy
 $insecure
 EOF
 fi
