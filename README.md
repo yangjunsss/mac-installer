@@ -8,5 +8,5 @@ curl -sSL https://raw.githubusercontent.com/yangjunsss/mac-installer/master/inst
 
 ## How to use with Proxy and self-certificate
 ```bash
-curl -sSL --proxy-user USER[:PASSWORD] --proxy [PROTOCOL://]HOST[:PORT] --insecure https://raw.githubusercontent.com/yangjunsss/mac-installer/master/install.sh | bash -s -- --proxy-user USER[:PASSWORD] --proxy [PROTOCOL://]HOST[:PORT] --insecure
+export all_proxy=PROTOCOL://USERNAME:PASSWORD@HOST[:PORT]; curl -sSL --insecure https://raw.githubusercontent.com/yangjunsss/mac-installer/master/install.sh | bash -s -- --insecure
 ```
